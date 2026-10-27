@@ -1,0 +1,11 @@
+services:
+  catalog:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./primo_catalog.yaml:/app/primo_catalog.yaml:ro
+      - ./domains:/app/domains:rw
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped

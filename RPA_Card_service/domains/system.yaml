@@ -1,0 +1,175 @@
+﻿domain: system
+name: Система
+description: Файловая система, процессы, утилиты
+
+activities:
+  - id: WFPathExists
+    name: Существует файл/папка
+    short: Проверяет наличие файла или папки по указанному пути. Результат записывает в булеву переменную.
+    is_container: false
+    className: LTools.Data.Elements.FileSystem.WFPathExists
+    assemblyName: LTools.Data, Version=1.0.3.1, Culture=neutral, PublicKeyToken=null
+    inputParams:
+      - name: FileName
+        type: String
+        required: true
+        desc: Путь к файлу или папке (может быть выражением, например, str_pathReportTemplate)
+      - name: Variable
+        type: String
+        required: true
+        desc: Имя булевой переменной для результата (например, b_ifTemplateFileExists)
+      - name: DoSearchFolder
+        type: Boolean
+        required: false
+        default: false
+        desc: "true, если FileName — это папка; false, если файл"
+    xmlSkeleton: |
+      <SerializationComponent>
+        <ClassName>{{className}}</ClassName>
+        <AssemblyName>{{assemblyName}}</AssemblyName>
+        <Properties>
+          <SerializationItem><IsListValue>false</IsListValue><Name>FileName</Name><Value xsi:type="xsd:string">{{FileName}}</Value></SerializationItem>
+          <SerializationItem><IsListValue>false</IsListValue><Name>Variable</Name><Value xsi:type="xsd:string">{{Variable}}</Value></SerializationItem>
+          <SerializationItem><IsListValue>false</IsListValue><Name>DoSearchFolder</Name><Value xsi:type="xsd:boolean">{{DoSearchFolder}}</Value></SerializationItem>
+          <SerializationItem><IsListValue>false</IsListValue><Name>ComponentName</Name><Value xsi:type="xsd:string">Существует файл/папка</Value></SerializationItem>
+        </Properties>
+        <IsBreakpoint>false</IsBreakpoint>
+        <IsIgnore>false</IsIgnore>
+      </SerializationComponent>
+
+  - id: WFCopyFile
+    name: Копировать файл
+    short: Копирует файл из источника в указанное место назначения.
+    is_container: false
+    className: LTools.Data.Elements.FileSystem.WFCopyFile
+    assemblyName: LTools.Data, Version=1.0.3.1, Culture=neutral, PublicKeyToken=null
+    inputParams:
+      - name: PathFrom
+        type: String
+        required: true
+        desc: Путь к файлу-источнику
+      - name: PathTo
+        type: String
+        required: true
+        desc: Путь к файлу назначения
+      - name: DoOverwrite
+        type: Boolean
+        required: false
+        default: true
+        desc: Перезаписывать ли файл назначения, если он существует
+    xmlSkeleton: |
+      <SerializationComponent>
+        <ClassName>{{className}}</ClassName>
+        <AssemblyName>{{assemblyName}}</AssemblyName>
+        <Properties>
+          <SerializationItem><IsListValue>false</IsListValue><Name>PathFrom</Name><Value xsi:type="xsd:string">{{PathFrom}}</Value></SerializationItem>
+          <SerializationItem><IsListValue>false</IsListValue><Name>PathTo</Name><Value xsi:type="xsd:string">{{PathTo}}</Value></SerializationItem>
+          <SerializationItem><IsListValue>false</IsListValue><Name>DoOverwrite</Name><Value xsi:type="xsd:boolean">{{DoOverwrite}}</Value></SerializationItem>
+          <SerializationItem><IsListValue>false</IsListValue><Name>ComponentName</Name><Value xsi:type="xsd:string">Копировать файл</Value></SerializationItem>
+        </Properties>
+        <IsBreakpoint>false</IsBreakpoint>
+        <IsIgnore>false</IsIgnore>
+      </SerializationComponent>
+
+  - id: WFSearchFile
+    name: Поиск файлов
+    short: Ищет файлы по заданному пути и шаблону. Результат — список путей в переменной типа List<String>.
+    is_container: false
+    className: LTools.Data.Elements.FileSystem.WFSearchFile
+    assemblyName: LTools.Data, Version=1.0.3.1, Culture=neutral, PublicKeyToken=null
+    inputParams:
+      - name: FileName
+        type: String
+        required: true
+        desc: Путь для поиска (папка)
+      - name: Pattern
+        type: String
+        required: false
+        default: "*"
+        desc: "Шаблон поиска. По умолчанию '*' — все файлы"
+      - name: Variable
+        type: String
+        required: true
+        desc: Имя переменной типа List<String> для сохранения найденных путей
+      - name: DoSearchFolder
+        type: Boolean
+        required: false
+        default: false
+        desc: Искать ли папки (а не файлы)
+      - name: IncFolders
+        type: Boolean
+        required: false
+        default: false
+        desc: Включать ли папки в результат
+    xmlSkeleton: |
+      <SerializationComponent>
+        <ClassName>{{className}}</ClassName>
+        <AssemblyName>{{assemblyName}}</AssemblyName>
+        <Properties>
+          <SerializationItem><IsListValue>false</IsListValue><Name>FileName</Name><Value xsi:type="xsd:string">{{FileName}}</Value></SerializationItem>
+          <SerializationItem><IsListValue>false</IsListValue><Name>Pattern</Name><Value xsi:type="xsd:string">{{Pattern}}</Value></SerializationItem>
+          <SerializationItem><IsListValue>false</IsListValue><Name>Variable</Name><Value xsi:type="xsd:string">{{Variable}}</Value></SerializationItem>
+          <SerializationItem><IsListValue>false</IsListValue><Name>DoSearchFolder</Name><Value xsi:type="xsd:boolean">{{DoSearchFolder}}</Value></SerializationItem>
+          <SerializationItem><IsListValue>false</IsListValue><Name>IncFolders</Name><Value xsi:type="xsd:boolean">{{IncFolders}}</Value></SerializationItem>
+          <SerializationItem><IsListValue>false</IsListValue><Name>ComponentName</Name><Value xsi:type="xsd:string">Поиск файлов</Value></SerializationItem>
+        </Properties>
+        <IsBreakpoint>false</IsBreakpoint>
+        <IsIgnore>false</IsIgnore>
+      </SerializationComponent>
+
+  - id: WFDeleteFile
+    name: Удалить файл
+    short: Удаляет файл по указанному пути.
+    is_container: false
+    className: LTools.Data.Elements.FileSystem.WFDeleteFile
+    assemblyName: LTools.Data, Version=1.0.3.1, Culture=neutral, PublicKeyToken=null
+    inputParams:
+      - name: FileName
+        type: String
+        required: true
+        desc: Путь к удаляемому файлу
+    xmlSkeleton: |
+      <SerializationComponent>
+        <ClassName>{{className}}</ClassName>
+        <AssemblyName>{{assemblyName}}</AssemblyName>
+        <Properties>
+          <SerializationItem><IsListValue>false</IsListValue><Name>FileName</Name><Value xsi:type="xsd:string">{{FileName}}</Value></SerializationItem>
+          <SerializationItem><IsListValue>false</IsListValue><Name>ComponentName</Name><Value xsi:type="xsd:string">Удалить файл</Value></SerializationItem>
+        </Properties>
+        <IsBreakpoint>false</IsBreakpoint>
+        <IsIgnore>false</IsIgnore>
+      </SerializationComponent>
+      
+  - id: WFPathExists
+    name: Существует файл/папка
+    short: Проверяет наличие файла либо папки по указанному пути.
+    is_container: false
+    className: LTools.Data.Elements.FileSystem.WFPathExists
+    assemblyName: LTools.Data, Version=1.0.3.1, Culture=neutral, PublicKeyToken=null
+    inputParams:
+      - name: Path
+        type: String
+        required: true
+        desc: Путь к проверяемой сущности (например, c:\folder\file.txt)
+      - name: Variable
+        type: String
+        required: true
+        desc: Имя переменной-приемника результата проверки (тип Boolean)
+      - name: SearchFolder
+        type: Boolean
+        required: false
+        default: false
+        desc: Признак поиска папки (а не файла)
+    xmlSkeleton: |
+      <SerializationComponent>
+        <ClassName>{{className}}</ClassName>
+        <AssemblyName>{{assemblyName}}</AssemblyName>
+        <Properties>
+          <SerializationItem><IsListValue>false</IsListValue><Name>Path</Name><Value xsi:type="xsd:string">{{Path}}</Value></SerializationItem>
+          <SerializationItem><IsListValue>false</IsListValue><Name>Variable</Name><Value xsi:type="xsd:string">{{Variable}}</Value></SerializationItem>
+          <SerializationItem><IsListValue>false</IsListValue><Name>SearchFolder</Name><Value xsi:type="xsd:boolean">{{SearchFolder}}</Value></SerializationItem>
+          <SerializationItem><IsListValue>false</IsListValue><Name>ComponentName</Name><Value xsi:type="xsd:string">Существует файл/папка</Value></SerializationItem>
+        </Properties>
+        <IsBreakpoint>false</IsBreakpoint>
+        <IsIgnore>false</IsIgnore>
+      </SerializationComponent>  

@@ -1,0 +1,55 @@
+{
+  "moduleName" : "ValidateAndPrepareFolder",
+  "steps" : [ {
+    "activityId" : "WFPathExists",
+    "purpose" : "Проверить существование целевой папки",
+    "params" : {
+      "FileName" : "in_targetPath",
+      "Variable" : "b_isFolderExists",
+      "DoSearchFolder" : true
+    },
+    "children" : null
+  }, {
+    "activityId" : "WFIf",
+    "purpose" : "Проверка существования папки",
+    "params" : {
+      "Equation" : "b_isFolderExists == false"
+    },
+    "children" : {
+      "then" : [ {
+        "activityId" : "WFAddToLog",
+        "purpose" : "Запись ошибки в журнал",
+        "params" : {
+          "Message" : "Критическая ошибка: целевая папка не найдена",
+          "MessageType" : 2
+        },
+        "children" : null
+      }, {
+        "activityId" : "WFThrow",
+        "purpose" : "Выброс системного исключения",
+        "params" : {
+          "Message" : "FolderNotFound",
+          "ExcType" : 7
+        },
+        "children" : null
+      } ],
+      "else" : [ {
+        "activityId" : "WFAddToLog",
+        "purpose" : "Запись успешной проверки в журнал",
+        "params" : {
+          "Message" : "Целевая папка проверена успешно",
+          "MessageType" : 1
+        },
+        "children" : null
+      }, {
+        "activityId" : "WFAssign",
+        "purpose" : "Присвоение статуса готовности",
+        "params" : {
+          "Variable" : "out_processStatus",
+          "Data" : "Ready"
+        },
+        "children" : null
+      } ]
+    }
+  } ]
+}

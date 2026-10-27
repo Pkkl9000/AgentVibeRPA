@@ -1,0 +1,149 @@
+﻿domain: workflow
+name: Управление потоком
+description: Логика выполнения, условия, циклы, логирование
+
+activities:
+  - id: WFAddToLog
+    name: Запись в журнал
+    short: Добавляет сообщение в лог выполнения с указанным типом.
+    is_container: false
+    className: LTools.Workflow.Elements.WFAddToLog
+    assemblyName: LTools.Workflow, Version=1.0.6.1, Culture=neutral, PublicKeyToken=null
+    inputParams:
+      - name: Message
+        type: String
+        required: true
+        desc: Текст сообщения (можно использовать переменные)
+      - name: MessageType
+        type: Integer
+        required: false
+        default: 1
+        desc: "1=Info, 2=Error, 3=Warning"
+      - name: ComponentName
+        type: String
+        required: false
+        default: "Запись в журнал"
+    xmlSkeleton: |
+      <SerializationComponent>
+        <ClassName>{{className}}</ClassName>
+        <AssemblyName>{{assemblyName}}</AssemblyName>
+        <Properties>
+          <SerializationItem><IsListValue>false</IsListValue><Name>Message</Name><Value xsi:type="xsd:string">{{Message}}</Value></SerializationItem>
+          <SerializationItem><IsListValue>false</IsListValue><Name>MessageType</Name><Value xsi:type="xsd:int">{{MessageType}}</Value></SerializationItem>
+          <SerializationItem><IsListValue>false</IsListValue><Name>ComponentName</Name><Value xsi:type="xsd:string">{{ComponentName}}</Value></SerializationItem>
+        </Properties>
+        <IsBreakpoint>false</IsBreakpoint>
+        <IsIgnore>false</IsIgnore>
+      </SerializationComponent>
+
+  - id: WFSequenceLink
+    name: Ссылка на процесс
+    short: Вызывает другой внешний процесс (.ltw).
+    is_container: false
+    className: LTools.Workflow.Elements.WFSequenceLink
+    assemblyName: LTools.Workflow, Version=1.0.6.1, Culture=neutral, PublicKeyToken=null
+    inputParams:
+      - name: SeqPath
+        type: String
+        required: true
+        desc: Относительный путь к файлу, например, ".\\Process\\MyProcess.ltw"
+      - name: Cache
+        type: Boolean
+        required: false
+        default: true
+    xmlSkeleton: |
+      <SerializationComponent>
+        <ClassName>{{className}}</ClassName>
+        <AssemblyName>{{assemblyName}}</AssemblyName>
+        <Properties>
+          <SerializationItem><IsListValue>false</IsListValue><Name>SeqPath</Name><Value xsi:type="xsd:string">{{SeqPath}}</Value></SerializationItem>
+          <SerializationItem><IsListValue>false</IsListValue><Name>Cache</Name><Value xsi:type="xsd:boolean">{{Cache}}</Value></SerializationItem>
+        </Properties>
+        <IsBreakpoint>false</IsBreakpoint>
+        <IsIgnore>false</IsIgnore>
+      </SerializationComponent>
+
+  - id: WFIf
+    name: Условие If-Else
+    short: Выполняет разные ветки процессов в зависимости от логического условия.
+    is_container: true
+    className: LTools.Workflow.Elements.WFIf
+    assemblyName: LTools.Workflow, Version=1.0.6.1, Culture=neutral, PublicKeyToken=null
+    inputParams:
+      - name: Equation
+        type: String
+        required: true
+        desc: Логическое выражение, например, "in_var > 0"
+      - name: ComponentName
+        type: String
+        required: false
+        default: "If-Else"
+    xmlSkeleton: |
+      <SerializationComponent xsi:type="SerializationContainer">
+        <ClassName>{{className}}</ClassName>
+        <AssemblyName>{{assemblyName}}</AssemblyName>
+        <Properties>
+          <SerializationItem><IsListValue>false</IsListValue><Name>Equation</Name><Value xsi:type="xsd:string">{{Equation}}</Value></SerializationItem>
+          <SerializationItem><IsListValue>false</IsListValue><Name>ComponentName</Name><Value xsi:type="xsd:string">{{ComponentName}}</Value></SerializationItem>
+        </Properties>
+        <IsBreakpoint>false</IsBreakpoint>
+        <IsIgnore>false</IsIgnore>
+        <Components>
+          {{ThenChildren}}
+          {{ElseChildren}}
+        </Components>
+      </SerializationComponent>
+
+  - id: WFAssign
+    name: Присвоение
+    short: Присваивает значение переменной.
+    is_container: false
+    className: LTools.Workflow.Elements.WFAssign
+    assemblyName: LTools.Workflow, Version=1.0.6.1, Culture=neutral, PublicKeyToken=null
+    inputParams:
+      - name: Variable
+        type: String
+        required: true
+        desc: Имя переменной для присвоения
+      - name: Data
+        type: String
+        required: true
+        desc: Значение или выражение для присвоения
+    xmlSkeleton: |
+      <SerializationComponent>
+        <ClassName>{{className}}</ClassName>
+        <AssemblyName>{{assemblyName}}</AssemblyName>
+        <Properties>
+          <SerializationItem><IsListValue>false</IsListValue><Name>Variable</Name><Value xsi:type="xsd:string">{{Variable}}</Value></SerializationItem>
+          <SerializationItem><IsListValue>false</IsListValue><Name>Data</Name><Value xsi:type="xsd:string">{{Data}}</Value></SerializationItem>
+        </Properties>
+        <IsBreakpoint>false</IsBreakpoint>
+        <IsIgnore>false</IsIgnore>
+      </SerializationComponent
+
+  - id: WFThrow
+    name: Исключение
+    short: Генерирует исключение для прерывания процесса.
+    is_container: false
+    className: LTools.Workflow.Elements.WFThrow
+    assemblyName: LTools.Workflow, Version=1.0.6.1, Culture=neutral, PublicKeyToken=null
+    inputParams:
+      - name: Message
+        type: String
+        required: true
+        desc: Текст сообщения об ошибке
+      - name: ExcType
+        type: Integer
+        required: true
+        desc: "0=Business, 7=System"
+    xmlSkeleton: |
+      <SerializationComponent>
+        <ClassName>{{className}}</ClassName>
+        <AssemblyName>{{assemblyName}}</AssemblyName>
+        <Properties>
+          <SerializationItem><IsListValue>false</IsListValue><Name>Message</Name><Value xsi:type="xsd:string">{{Message}}</Value></SerializationItem>
+          <SerializationItem><IsListValue>false</IsListValue><Name>ExcType</Name><Value xsi:type="xsd:int">{{ExcType}}</Value></SerializationItem>
+        </Properties>
+        <IsBreakpoint>false</IsBreakpoint>
+        <IsIgnore>false</IsIgnore>
+      </SerializationComponent>

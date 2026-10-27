@@ -1,0 +1,72 @@
+﻿domain: excel
+name: Excel
+description: Работа с файлами Excel, чтение и запись
+
+activities:
+  - id: WFAttachExcel
+    name: Приложение Excel
+    short: Открывает или подключается к файлу Excel. Является контейнером.
+    is_container: true
+    className: LTools.Office.Elements.Excel.WFAttachExcel
+    assemblyName: LTools.Office, Version=1.0.2.1, Culture=neutral, PublicKeyToken=null
+    inputParams:
+      - name: FileName
+        type: String
+        required: true
+        desc: Полный путь к файлу Excel
+      - name: IsVisibleObj
+        type: Boolean
+        required: false
+        default: false
+      - name: ReadOnly
+        type: Boolean
+        required: false
+        default: false
+    xmlSkeleton: |
+      <SerializationComponent xsi:type="SerializationContainer">
+        <ClassName>{{className}}</ClassName>
+        <AssemblyName>{{assemblyName}}</AssemblyName>
+        <Properties>
+          <SerializationItem><IsListValue>false</IsListValue><Name>FileName</Name><Value xsi:type="xsd:string">{{FileName}}</Value></SerializationItem>
+          <SerializationItem><IsListValue>false</IsListValue><Name>IsVisibleObj</Name><Value xsi:type="xsd:boolean">{{IsVisibleObj}}</Value></SerializationItem>
+          <SerializationItem><IsListValue>false</IsListValue><Name>ReadOnly</Name><Value xsi:type="xsd:boolean">{{ReadOnly}}</Value></SerializationItem>
+        </Properties>
+        <IsBreakpoint>false</IsBreakpoint>
+        <IsIgnore>false</IsIgnore>
+        <Components>
+          {{ChildrenContent}}
+        </Components>
+      </SerializationComponent>
+
+  - id: WFReadRange
+    name: Чтение диапазона
+    short: Читает диапазон ячеек из открытого Excel в DataTable.
+    is_container: false
+    className: LTools.Office.Elements.Excel.WFReadRange
+    assemblyName: LTools.Office, Version=1.0.2.1, Culture=neutral, PublicKeyToken=null
+    inputParams:
+      - name: Range
+        type: String
+        required: false
+        default: "*"
+        desc: "Диапазон вида A1:D10. * означает весь лист"
+      - name: VariableTable
+        type: String
+        required: true
+        desc: Имя переменной DataTable для сохранения результата
+      - name: IsFirstHeader
+        type: Boolean
+        required: false
+        default: true
+    xmlSkeleton: |
+      <SerializationComponent>
+        <ClassName>{{className}}</ClassName>
+        <AssemblyName>{{assemblyName}}</AssemblyName>
+        <Properties>
+          <SerializationItem><IsListValue>false</IsListValue><Name>Range</Name><Value xsi:type="xsd:string">{{Range}}</Value></SerializationItem>
+          <SerializationItem><IsListValue>false</IsListValue><Name>VariableTable</Name><Value xsi:type="xsd:string">{{VariableTable}}</Value></SerializationItem>
+          <SerializationItem><IsListValue>false</IsListValue><Name>IsFirstHeader</Name><Value xsi:type="xsd:boolean">{{IsFirstHeader}}</Value></SerializationItem>
+        </Properties>
+        <IsBreakpoint>false</IsBreakpoint>
+        <IsIgnore>false</IsIgnore>
+      </SerializationComponent>
